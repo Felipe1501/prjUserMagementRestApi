@@ -76,28 +76,9 @@ class User{
     }
 
    static getUserStorage(){
-        let users = [];
+        
+        return HttpRequest.get('/users');
 
-        if(localStorage.getItem("users")){
-
-            users = JSON.parse(localStorage.getItem("users"));
-        }
-
-        return users;
-    }
-
-    getNewID(){
-
-      let usersID = parseInt(localStorage.getItem("usersID"));
-
-      //refere-se a toda aplicação, window, que não se refere somente ao documento atual
-      if (!usersID > 0) usersID = 0;
-
-      usersID++;
-
-      localStorage.setItem("usersID", usersID);
-
-      return usersID;
     }
 
     toJSON(){
@@ -141,17 +122,8 @@ class User{
 
     remove(){
 
-        let users = User.getUserStorage();
+       return HttpRequest.delete(`/users/${this.id}`);
 
-        users.forEach((userData, index)=>{
-
-            if (this._id == userData._id){
-                users.splice(index, 1);
-            }
-
-        });
-        //removeItem = remove uma chave do localStorage
-        localStorage.setItem("users", JSON.stringify(users));
     }
 }
 
