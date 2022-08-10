@@ -77,7 +77,7 @@ class User{
 
    static getUserStorage(){
         
-        return HttpRequest.get('/users');
+        return Fetch.get('/users');
 
     }
 
@@ -100,11 +100,11 @@ class User{
 
         if (this.id){
 
-        promise = HttpRequest.put(`/users/${this.id}`, this.toJSON());
+        promise = Fetch.put(`/users/${this.id}`, this.toJSON());
         
-        }else{
+        } else {
 
-        promise = HttpRequest.put(`/users`, this.toJSON());
+        promise = Fetch.post(`/users`, this.toJSON());
         
         }
 
@@ -112,8 +112,11 @@ class User{
             this.loadFromJSON(data);
 
             resolve(this);
+
         }).catch(e =>{
+
             reject(e);
+            
         }); //fechando cacth
 
      }); //fechando promise
@@ -122,7 +125,7 @@ class User{
 
     remove(){
 
-       return HttpRequest.delete(`/users/${this.id}`);
+       return Fetch.delete(`/users/${this.id}`);
 
     }
 }
