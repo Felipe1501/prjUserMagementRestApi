@@ -54,18 +54,18 @@ class UserController {
 
             user.loadFromJSON(result);
 
-            user.save();
+            user.save().then(user => {
+                //JSON.stringify = transforma um objeto JSON em uma string
+                this.getTr(user, tr);
 
-           //JSON.stringify = transforma um objeto JSON em uma string
-            this.getTr(user, tr);
+                this.updateCount();
 
-            this.updateCount();
+                this.formUpdateEl.reset();
 
-            this.formUpdateEl.reset();
+                btn.disabled = false;
 
-            btn.disabled = false;
-
-            this.showPanelCreate();
+                this.showPanelCreate();
+            });
         },
         (e) =>{
             //console.error comando que exibe mensagem como erro
@@ -98,13 +98,15 @@ class UserController {
             
             values.photo = content;
 
-            values.save();
+            values.save().then(user =>{
+                
+                this.addLine(user);
 
-            this.addLine(values);
+                this.formEl.reset();
+    
+                btn.disabled = false;
+            });
 
-            this.formEl.reset();
-
-            btn.disabled = false;
         },
         (e) =>{
             //console.error comando que exibe mensagem como erro

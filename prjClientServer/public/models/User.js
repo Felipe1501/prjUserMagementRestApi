@@ -69,7 +69,7 @@ class User{
                     this[name] = new Date(json[name]);
                 break;
                 default:
-                    this[name] = json[name];
+                  if(name.substring(0, 1) === '_') this[name] = json[name];
             }
             
         }
@@ -100,36 +100,43 @@ class User{
       return usersID;
     }
 
+    toJSON(){
+
+        let json = {};
+
+        Object.keys(this).forEach(key => {
+          if (this[key] !== undefined) json[key] = this[key];
+        });
+
+        return json;
+    }
+
     save(){
 
-        let users = User.getUserStorage();
+      return new Promise((resolve, reject) =>{
 
-        if(this.id > 0){
-            //localiza uma informação em um array = filter, que retorna para a tela a informação
-            //let user = users.filter(u => {return u._id === this.id;});
-            //map = localiza uma informação, mapeia sua posição, se alterar dados, substitui
-            
-            users.map(u => {
+        let promise;
 
-                if(u._id == this.id){
-                    //Object.assign = copia atributos de um objeto(s) gerando um novo.
-                    Object.assign(u, this);
-                }
+        if (this.id){
 
-                return u;
-
-            });
+        promise = HttpRequest.put(`/users/${this.id}`, this.toJSON());
         
         }else{
 
-            this._id = this.getNewID();
-
-        //push = o método push adiciona ao final do array
-        users.push(this);
-
+        promise = HttpRequest.put(`/users`, this.toJSON());
+        
         }
 
-        localStorage.setItem("users", JSON.stringify(users));
+        promise.then(data =>{
+            this.loadFromJSON(data);
+
+            resolve(this);
+        }).catch(e =>{
+            reject(e);
+        }); //fechando cacth
+
+     }); //fechando promise
+
     }
 
     remove(){
