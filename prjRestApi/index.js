@@ -16,3 +16,4 @@ app.listen(4000, '127.0.0.1', ()=>{
     console.log('servidor rodando!');
 
 });
+//criação do servidor e armazenado na variavel, req: requisições feitas para o server, res: resposta do servidor

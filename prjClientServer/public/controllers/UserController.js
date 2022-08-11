@@ -58,6 +58,8 @@ class UserController {
                 //JSON.stringify = transforma um objeto JSON em uma string
                 this.getTr(user, tr);
 
+                this.addEventsTr(tr);
+
                 this.updateCount();
 
                 this.formUpdateEl.reset();
